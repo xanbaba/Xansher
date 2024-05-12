@@ -9,13 +9,24 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Messages\" />
-      <Folder Include="Model\" />
+      <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <None Remove="Source\folder-add-svgrepo-com.png" />
+      <Content Include="Source\folder.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Source\icons8-close-500.png" />
+      <Content Include="Source\close.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Source\file.png" />
+      <Content Include="Source\file.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
