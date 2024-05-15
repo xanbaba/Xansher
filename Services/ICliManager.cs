@@ -6,5 +6,5 @@ public interface ICliManager
 {
     public bool CreateNewProject(string projectTemplate, string projectDirectory);
     
-    public void RunProject(string projectDirectory);
+    public void RunProject(string projectDirectory, EventHandler? onExit);
 }

@@ -27,6 +27,12 @@
       <Content Include="Source\file.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Source\play-button.png" />
+      <None Remove="Source\run-svgrepo-com.svg" />
+      <None Remove="Source\run-svgrepo-com.png" />
+      <Content Include="Source\run-svgrepo-com.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

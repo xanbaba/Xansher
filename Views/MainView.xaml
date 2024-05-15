@@ -9,7 +9,8 @@
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         Title="MainView" Height="450" Width="800"
-        FontSize="16" d:DataContext="{d:DesignInstance Type=vm:MainViewModel}">
+        FontSize="16"
+        d:DataContext="{d:DesignInstance vm:MainViewModel}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -28,10 +29,19 @@
                     <MenuItem Header="New Solution" Command="{Binding NewSolutionCommand}" />
                     <MenuItem Header="Open" Command="{Binding OpenProjectCommand}" />
                 </MenuItem>
-                <MenuItem Header="Edit"></MenuItem>
-                <MenuItem Header="Run" Command="{Binding RunCommand}" />
+                <MenuItem Header="Edit" >
+                    <MenuItem Header="Cut" Command="{Binding CutCommand}" />
+                    <MenuItem Header="Copy" Command="{Binding CopyCommand}" />
+                    <MenuItem Header="Paste" Command="{Binding PasteCommand}" />
+                    <MenuItem Header="Undo" Command="{Binding UndoCommand}" />
+                    <MenuItem Header="Redo"  Command="{Binding RedoCommand}" />
+                </MenuItem>
+                <MenuItem Command="{Binding RunCommand}" Padding="5">
+                    <MenuItem.Header>
+                        <Image Width="30" Height="30" Source="../Source/run-svgrepo-com.png" />
+                    </MenuItem.Header>
+                </MenuItem>
             </Menu>
-
         </ToolBar>
         <Grid Grid.Row="1" Background="#2b2b2b">
             <Grid.ColumnDefinitions>
@@ -39,21 +49,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition MinWidth="300" />
             </Grid.ColumnDefinitions>
-            <TreeView Background="#2b2b2b" Margin="5 10 " ItemsSource="{Binding ProjectElements}">
+            <TreeView VerticalContentAlignment="Stretch" Background="#2b2b2b" Margin="5 10 " ItemsSource="{Binding ProjectElements}">
                 <TreeView.Resources>
-                    <Style TargetType="cc:ProjectElementButton">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="cc:ProjectElementButton">
-                                    <Border Background="{TemplateBinding Background}">
-                                        <ContentPresenter Content="{TemplateBinding Content}" />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Background" Value="#2b2b2b" />
-                        <Setter Property="Foreground" Value="#bdbdbd" />
-                    </Style>
 
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                                      Color="Transparent" />
@@ -65,7 +62,7 @@
                                      Color="Black" />
 
                     <HierarchicalDataTemplate DataType="{x:Type model:ProjectElement}">
-                        <TreeViewItem Margin="-20 0 0 0" FontSize="10" Foreground="#bdbdbd"
+                        <TreeViewItem VerticalContentAlignment="Stretch" Margin="-20 0 0 0" FontSize="10" Foreground="#bdbdbd"
                                       ItemsSource="{Binding ProjectElements}">
                             <TreeViewItem.Header>
                                 <StackPanel Name="ProjectElement" Orientation="Horizontal">
@@ -81,11 +78,59 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Resources>
-                                    <Image Width="15" Margin="0 0 5 0" />
                                     <cc:ProjectElementButton DoubleClickCommand="{Binding OpenFileInEditorCommand}"
                                                              ProjectElement="{Binding ElementName=ProjectElement, Path=DataContext}"
                                                              MouseDoubleClick="ProjectElement_OnMouseDoubleClick"
-                                                             Content="{Binding Name}" />
+                                                             x:Name="ProjectElementButton"
+                                                             VerticalContentAlignment="Stretch">
+                                        <cc:ProjectElementButton.Content>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image Width="15" Margin="0 0 5 0" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Name}"></TextBlock>
+                                            </Grid>
+                                        </cc:ProjectElementButton.Content>
+                                        <cc:ProjectElementButton.Resources>
+                                            
+                                            <ContextMenu x:Key="DirectoryContextMenu">
+                                                <MenuItem Header="Add" Click="AddProjectElementMenuItem_OnClick" />
+                                                <MenuItem Header="Remove" Click="RemoveProjectElementMenuItem_OnClick" />
+                                            </ContextMenu>
+                                            
+                                            <ContextMenu x:Key="FileContextMenu">
+                                                <MenuItem Header="Remove" Click="RemoveProjectElementMenuItem_OnClick" />
+                                            </ContextMenu>
+    
+                                            <Style TargetType="cc:ProjectElementButton">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="cc:ProjectElementButton">
+                                                            <Border Background="{TemplateBinding Background}">
+                                                                <ContentPresenter Content="{TemplateBinding Content}" />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Background" Value="#2b2b2b" />
+                                                <Setter Property="Foreground" Value="#bdbdbd" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDirectory}" Value="True">
+                                                        <DataTrigger.Setters>
+                                                            <Setter Property="ContextMenu" Value="{StaticResource DirectoryContextMenu}" />
+                                                        </DataTrigger.Setters>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsDirectory}" Value="False">
+                                                        <DataTrigger.Setters>
+                                                            <Setter Property="ContextMenu" Value="{StaticResource FileContextMenu}" />
+                                                        </DataTrigger.Setters>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </cc:ProjectElementButton.Resources>
+                                    </cc:ProjectElementButton>
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
@@ -103,7 +148,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TabControl Grid.Column="0" Background="#2b2b2b" ItemsSource="{Binding ActiveFiles}">
+                <TabControl Grid.Column="0" SelectionChanged="tabControl1_SelectionChanged" x:Name="ActiveFilesTabControl" Background="#2b2b2b" ItemsSource="{Binding ActiveFiles}" >
                     <TabControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="5 0">
@@ -112,21 +157,21 @@
                                     Command="{Binding DataContext.RemoveTabCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}"
                                     CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}} }"
                                     Height="30" Width="30" Margin="10 5 0 5">
-                                    <Image Source="../Source/close.png" Margin="5"></Image>
+                                    <Image Source="../Source/close.png" Margin="5" />
                                 </Button>
                             </StackPanel>
                         </DataTemplate>
                     </TabControl.ItemTemplate>
-
                     <TabControl.ContentTemplate>
                         <DataTemplate>
                             <Grid d:DataContext="{d:DesignInstance Type=model:CodeFileModel}">
-                                <avalonedit:TextEditor x:Name="CodeEditor" Background="Black"
-                                                   HorizontalScrollBarVisibility="Auto"
-                                                   Foreground="#bdbdbd" SyntaxHighlighting="C#"
-                                                   ShowLineNumbers="True"
-                                                   LineNumbersForeground="#808080"
-                                                   Document="{Binding Content}"/>
+                                <avalonedit:TextEditor Background="Black"
+                                                       x:Name="TextEditor"
+                                                       HorizontalScrollBarVisibility="Auto"
+                                                       Foreground="#bdbdbd" SyntaxHighlighting="C#"
+                                                       ShowLineNumbers="True"
+                                                       LineNumbersForeground="#808080"
+                                                       Document="{Binding Content}" />
                             </Grid>
                         </DataTemplate>
                     </TabControl.ContentTemplate>
@@ -136,7 +181,8 @@
                               HorizontalAlignment="Stretch">
                 </GridSplitter>
                 <Grid Grid.Row="2">
-                    <TextBox HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Background="#2b2b2b" Foreground="Brown" Text="{Binding ErrorMessage}" />
+                    <TextBox HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True"
+                             Background="#2b2b2b" Foreground="Brown" Text="{Binding ErrorMessage}" />
                 </Grid>
             </Grid>
         </Grid>

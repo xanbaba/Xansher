@@ -21,17 +21,25 @@ public partial class App
         services.AddSingleton<MainView>();
         services.AddSingleton<MainViewModel>();
         services.AddTransient<NewSolutionView>();
+        services.AddTransient<AddNewProjectElementView>();
         services.AddTransient<NewSolutionViewModel>();
+        services.AddTransient<AddNewProjectElementViewModel>();
         services.AddTransient<IFileDialogManager, WindowsDialogManager>();
         services.AddTransient<IDirectoryDialogManager, WindowsDialogManager>();
         services.AddTransient<ICliManager, WindowsCliManager>();
+        services.AddTransient<IFileManager, WindowsFileManager>();
+        services.AddTransient<IDirectoryManager, WindowsDirectoryManager>();
 
         ServiceProvider = services.BuildServiceProvider();
 
-        MainWindow = ServiceProvider.GetService<MainView>()!;
-        MainWindow.DataContext = ServiceProvider.GetService<MainViewModel>();
+        var mainView = ServiceProvider.GetService<MainView>()!;
+        var mainViewModel = ServiceProvider.GetService<MainViewModel>()!;
+        mainView.DataContext = mainViewModel;
+        mainView.AddProjectElementClickCommand = mainViewModel.ShowAddNewProjectElementViewCommand;
+        mainView.RemoveProjectElementCommand = mainViewModel.RemoveProjectElementCommand;
+        
 
-        MainWindow.ShowDialog();
+        mainView.ShowDialog();
         
         base.OnStartup(e);
     }

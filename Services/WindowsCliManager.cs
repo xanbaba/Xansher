@@ -22,16 +22,23 @@ public class WindowsCliManager : ICliManager
         return string.IsNullOrWhiteSpace(error);
     }
 
-    public void RunProject(string projectDirectory)
+    public void RunProject(string projectDirectory, EventHandler? onExit)
     {
-        using var process = new Process();
+        var process = new Process();
+
         var startInfo = new ProcessStartInfo
         {
             FileName = "dotnet.exe",
-            Arguments = $"run --project {projectDirectory}"
+            Arguments = $"run --project {projectDirectory}",
+            RedirectStandardError = true
         };
         process.EnableRaisingEvents = true;
         process.StartInfo = startInfo;
+        process.Exited += (sender, args) =>
+        {
+            onExit?.Invoke(sender, args);
+            process.Dispose();
+        };
         process.Start();
     }
 }

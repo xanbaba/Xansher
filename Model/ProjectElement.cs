@@ -25,14 +25,29 @@ public partial class ProjectElement
         {
             return;
         }
-        WeakReferenceMessenger.Default.Send(new AddActiveDocumentMessage(new AddActiveDocumentMessageMetaData
+
+        try
         {
-            CodeFileModel = new CodeFileModel(File.ReadAllText(button.ProjectElement.Path))
+            var fileContent = File.ReadAllText(button.ProjectElement.Path);
+            WeakReferenceMessenger.Default.Send(new AddActiveDocumentMessage(new AddActiveDocumentMessageMetaData
             {
-                Name = button.ProjectElement.Name,
-                Path = button.ProjectElement.Path
-            },
-            ProjectElementButton = button
-        }));
+                CodeFileModel = new CodeFileModel(fileContent)
+                {
+                    Name = button.ProjectElement.Name,
+                    Path = button.ProjectElement.Path
+                },
+                ProjectElementButton = button
+            }));
+        }
+        catch (FileNotFoundException)
+        {
+            WeakReferenceMessenger.Default.Send<RefreshProjectElementsMessage>();
+        }
+    }
+
+    [RelayCommand]
+    private void Add(object projectElementButton)
+    {
+        Console.WriteLine("!");
     }
 }
