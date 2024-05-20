@@ -64,7 +64,7 @@ public partial class MainViewModel : BaseViewModel
             return;
         }
 
-        ActiveFiles.Add(message.CodeFileModel);
+        ActiveFiles.Insert(0, message.CodeFileModel);
     }
 
     [RelayCommand]
@@ -85,6 +85,24 @@ public partial class MainViewModel : BaseViewModel
             Application.Current.Dispatcher.Invoke(LoadProjectElements);
         });
         
+    }
+
+    [RelayCommand]
+    private void Build()
+    {
+        if (_projectDirectory == null)
+        {
+            return;
+        }
+        _cliManager.BuildProject(_projectDirectory, (sender, _) =>
+        {
+            if (sender is Process process)
+            {
+                ErrorMessage = process.StandardError.ReadToEnd();
+            }
+
+            Application.Current.Dispatcher.Invoke(LoadProjectElements);
+        });
     }
 
     [RelayCommand]

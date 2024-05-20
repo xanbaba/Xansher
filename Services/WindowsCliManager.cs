@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Windows;
 
 namespace Xansher.Services;
 
@@ -28,8 +27,28 @@ public class WindowsCliManager : ICliManager
 
         var startInfo = new ProcessStartInfo
         {
-            FileName = "dotnet.exe",
-            Arguments = $"run --project {projectDirectory}",
+            FileName = "CMD.exe",
+            Arguments = $"/C dotnet run --project {projectDirectory} & Pause",
+            RedirectStandardError = true
+        };
+        process.EnableRaisingEvents = true;
+        process.StartInfo = startInfo;
+        process.Exited += (sender, args) =>
+        {
+            onExit?.Invoke(sender, args);
+            process.Dispose();
+        };
+        process.Start();
+    }
+
+    public void BuildProject(string projectDirectory, EventHandler? onExit)
+    {
+        var process = new Process();
+
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = "CMD.exe",
+            Arguments = $"/C dotnet build {projectDirectory} & Pause",
             RedirectStandardError = true
         };
         process.EnableRaisingEvents = true;

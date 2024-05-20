@@ -12,6 +12,107 @@
         FontSize="16"
         d:DataContext="{d:DesignInstance vm:MainViewModel}">
 
+    <Window.Resources>
+        <DrawingGroup Transform="6.123031769111886e-17,1.0,-1.0,6.123031769111886e-17,0.0,0.0"
+                      x:Key="TriangleSvgrepoComXaml">
+            <DrawingGroup.ClipGeometry>
+                <RectangleGeometry Rect="-2.4,-2.4,28.8,28.8" />
+            </DrawingGroup.ClipGeometry>
+            <DrawingGroup Transform="0.96,0.0,0.0,0.96,0.4800000000000004,0.4800000000000004" />
+            <DrawingGroup />
+            <DrawingGroup>
+                <DrawingGroup>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#ff14ad00" LineJoin="Round" Thickness="2.4" DashCap="Round" EndLineCap="Round"
+                                 StartLineCap="Round" />
+                        </GeometryDrawing.Pen>
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry
+                                Figures="M 4.37891 15.1999 C 3.46947 16.775 3.01489 17.5634 3.08281 18.2097 C 3.14206 18.7734 3.43792 19.2851 3.89648 19.6182 C 4.42204 20.0001 5.3309 20.0001 7.14853 20.0001 H 16.8515 C 18.6691 20.0001 19.5778 20.0001 20.1034 19.6182 C 20.5619 19.2851 20.8579 18.7734 20.9172 18.2097 C 20.9851 17.5634 20.5307 16.775 19.6212 15.1999 L 14.7715 6.79986 C 13.8621 5.22468 13.4071 4.43722 12.8135 4.17291 C 12.2957 3.94236 11.704 3.94236 11.1862 4.17291 C 10.5928 4.43711 10.1381 5.22458 9.22946 6.79845 L 4.37891 15.1999 Z"
+                                FillRule="Nonzero" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingGroup>
+        <DrawingImage Drawing="{StaticResource TriangleSvgrepoComXaml}" x:Key="DiTriangleSvgrepoComXaml" />
+
+        <DrawingGroup Transform="6.123031769111886e-17,-1.0,1.0,6.123031769111886e-17,0.0,0.0"
+                      x:Key="HammerSvgrepoComXaml">
+            <DrawingGroup.ClipGeometry>
+                <RectangleGeometry Rect="-81.92,-81.92,675.84,675.84" />
+            </DrawingGroup.ClipGeometry>
+            <DrawingGroup />
+            <DrawingGroup />
+            <DrawingGroup>
+                <DrawingGroup>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#ffc4c3c3">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry
+                                    Figures="M 273.221 120.258 L 106.811 286.672 L 147.874 327.736 L 314.281 161.325 Z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="#ffde6042">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry
+                                    Figures="M 29.964 434.577 L 0 404.624 L 0 374.431 L 144.829 229.602 L 204.944 289.714 L 60.088 434.57 Z" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                    <GeometryDrawing Brush="#ffadacad">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry
+                                Figures="M 270.399 123.081 L 213.768 179.704 L 295.896 179.704 L 310.958 164.649 Z" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="#ff7c7c7d">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry
+                                    Figures="M 266.248 63.565 l 1.226 1.524 C 266.983 64.479 266.567 63.943 266.248 63.565 z M 268.311 66.089 c -0.072 -0.065 -0.134 -0.155 -0.219 -0.244 l 0.299 0.392 c -0.007 -0.035 -0.038 -0.069 -0.052 -0.124 C 268.339 66.113 268.325 66.103 268.311 66.089 z M 195.516 11.69 c 25.847 10.341 53.407 34.451 70.11 51.144 l 0.1 0.1 c 0 0 0.01 0.02 0.044 0.044 c 0.951 0.979 1.803 2.012 2.541 3.111 c 0.014 0.014 0.027 0.024 0.027 0.024 c 0.347 0.467 0.718 0.934 1.092 1.401 l -1.04 -1.277 c 7.406 11.241 3.879 29.012 -11.67 44.555 l -6.204 20.508 l 53.97 53.963 l 21.157 -5.548 l 19.529 -19.526 c 9.751 -9.751 26.664 -12.377 42.169 3.125 c 8.659 8.662 4.264 21.208 6.009 31.316 c 0.563 3.289 1.764 6.317 4.326 8.872 l 37.926 37.919 c 5.383 5.397 14.132 5.383 19.515 -0.007 l 52.834 -52.827 c 5.383 -5.39 5.398 -14.142 0.014 -19.523 l -37.926 -37.932 c -2.561 -2.548 -5.582 -3.76 -8.879 -4.313 c -10.101 -1.747 -22.654 2.644 -31.313 -6.005 c -10.163 -10.166 -0.069 -23.364 -8.295 -37.009 c -1.085 -1.823 -2.493 -3.646 -4.313 -5.459 c 0 0 -43.687 -43.694 -73.544 -73.551 c -37.908 -37.908 -103.373 -35.618 -143.857 -19.828 C 184.038 -11.283 179.056 5.084 195.516 11.69 z"
+                                    FillRule="Nonzero" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="#ff808081">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry
+                                    Figures="M 461.159 126.819 l -67.81 67.81 c 0.563 3.289 1.764 6.317 4.326 8.872 l 37.926 37.919 c 5.383 5.397 14.132 5.383 19.515 -0.007 l 52.834 -52.827 c 5.383 -5.39 5.398 -14.142 0.014 -19.523 l -37.926 -37.932 C 467.477 128.584 464.456 127.372 461.159 126.819 z"
+                                    FillRule="Nonzero" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="#ff808081">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry
+                                    Figures="M 195.516 11.69 c 25.847 10.341 53.407 34.451 70.11 51.144 l 0.1 0.1 c 0 0 0.01 0.02 0.044 0.044 c 0.055 0.089 0.189 0.244 0.374 0.467 l 0.103 0.12 l 1.226 1.524 l 0.618 0.755 l 0.299 0.392 c 7.406 11.241 3.879 29.012 -11.67 44.555 l -6.204 20.508 l 53.97 53.963 l 21.157 -5.548 l 95.909 -95.91 c -1.085 -1.823 -2.493 -3.646 -4.313 -5.459 c 0 0 -43.687 -43.694 -73.544 -73.551 c -37.908 -37.908 -103.373 -35.618 -143.857 -19.828 C 184.038 -11.283 179.056 5.084 195.516 11.69 z"
+                                    FillRule="Nonzero" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="#ff9c9c9d">
+                            <GeometryDrawing.Geometry>
+                                <PathGeometry
+                                    Figures="M 507.957 188.587 l -52.82 52.834 c -5.398 5.397 -14.153 5.397 -19.543 0 l 72.363 -72.37 C 513.348 174.445 513.348 183.196 507.957 188.587 z"
+                                    FillRule="Nonzero" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingGroup>
+            </DrawingGroup>
+        </DrawingGroup>
+        <DrawingImage Drawing="{StaticResource HammerSvgrepoComXaml}" x:Key="DiHammerSvgrepoComXaml" />
+    </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Key="C" Modifiers="Control" Command="{Binding CutCommand}" />
+        <KeyBinding Key="X" Modifiers="Control" Command="{Binding CutCommand}" />
+        <KeyBinding Key="V" Modifiers="Control" Command="{Binding PasteCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control" Command="{Binding UndoCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control+Shift" Command="{Binding RedoCommand}" />
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding NewSolutionCommand}" />
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding OpenProjectCommand}" />
+    </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -26,19 +127,73 @@
                     </Style>
                 </Menu.Resources>
                 <MenuItem Header="File">
-                    <MenuItem Header="New Solution" Command="{Binding NewSolutionCommand}" />
-                    <MenuItem Header="Open" Command="{Binding OpenProjectCommand}" />
+                    <MenuItem Command="{Binding NewSolutionCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="100" Margin="0 0 50 0">New Solution</TextBlock>
+                                <TextBlock>Ctrl+N</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Command="{Binding OpenProjectCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="100" Margin="0 0 50 0">Open</TextBlock>
+                                <TextBlock>Ctrl+O</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Edit" >
-                    <MenuItem Header="Cut" Command="{Binding CutCommand}" />
-                    <MenuItem Header="Copy" Command="{Binding CopyCommand}" />
-                    <MenuItem Header="Paste" Command="{Binding PasteCommand}" />
-                    <MenuItem Header="Undo" Command="{Binding UndoCommand}" />
-                    <MenuItem Header="Redo"  Command="{Binding RedoCommand}" />
+                <MenuItem Header="Edit">
+                    <MenuItem Command="{Binding CutCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="40" Margin="0 0 50 0">Cut</TextBlock>
+                                <TextBlock>Ctrl+X</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Command="{Binding CopyCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="40" Margin="0 0 50 0">Copy</TextBlock>
+                                <TextBlock>Ctrl+C</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Command="{Binding PasteCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="40" Margin="0 0 50 0">Paste</TextBlock>
+                                <TextBlock>Ctrl+V</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Command="{Binding UndoCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="40" Margin="0 0 50 0">Undo</TextBlock>
+                                <TextBlock>Ctrl+Z</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Command="{Binding RedoCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="40" Margin="0 0 50 0">Redo</TextBlock>
+                                <TextBlock>Ctrl+Shift+Z</TextBlock>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Command="{Binding RunCommand}" Padding="5">
                     <MenuItem.Header>
-                        <Image Width="30" Height="30" Source="../Source/run-svgrepo-com.png" />
+                        <Image Width="20" Height="20" Source="{StaticResource DiTriangleSvgrepoComXaml}" />
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding BuildCommand}">
+                    <MenuItem.Header>
+                        <Image Width="20" Height="20" Source="{StaticResource DiHammerSvgrepoComXaml}" />
                     </MenuItem.Header>
                 </MenuItem>
             </Menu>
@@ -49,7 +204,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition MinWidth="300" />
             </Grid.ColumnDefinitions>
-            <TreeView VerticalContentAlignment="Stretch" Background="#2b2b2b" Margin="5 10 " ItemsSource="{Binding ProjectElements}">
+            <TreeView VerticalContentAlignment="Stretch" Background="#2b2b2b" Margin="5 10 "
+                      ItemsSource="{Binding ProjectElements}">
                 <TreeView.Resources>
 
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
@@ -62,7 +218,8 @@
                                      Color="Black" />
 
                     <HierarchicalDataTemplate DataType="{x:Type model:ProjectElement}">
-                        <TreeViewItem VerticalContentAlignment="Stretch" Margin="-20 0 0 0" FontSize="10" Foreground="#bdbdbd"
+                        <TreeViewItem VerticalContentAlignment="Stretch" Margin="-20 0 0 0" FontSize="10"
+                                      Foreground="#bdbdbd"
                                       ItemsSource="{Binding ProjectElements}">
                             <TreeViewItem.Header>
                                 <StackPanel Name="ProjectElement" Orientation="Horizontal">
@@ -94,16 +251,16 @@
                                             </Grid>
                                         </cc:ProjectElementButton.Content>
                                         <cc:ProjectElementButton.Resources>
-                                            
+
                                             <ContextMenu x:Key="DirectoryContextMenu">
                                                 <MenuItem Header="Add" Click="AddProjectElementMenuItem_OnClick" />
                                                 <MenuItem Header="Remove" Click="RemoveProjectElementMenuItem_OnClick" />
                                             </ContextMenu>
-                                            
+
                                             <ContextMenu x:Key="FileContextMenu">
                                                 <MenuItem Header="Remove" Click="RemoveProjectElementMenuItem_OnClick" />
                                             </ContextMenu>
-    
+
                                             <Style TargetType="cc:ProjectElementButton">
                                                 <Setter Property="Template">
                                                     <Setter.Value>
@@ -119,12 +276,14 @@
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDirectory}" Value="True">
                                                         <DataTrigger.Setters>
-                                                            <Setter Property="ContextMenu" Value="{StaticResource DirectoryContextMenu}" />
+                                                            <Setter Property="ContextMenu"
+                                                                    Value="{StaticResource DirectoryContextMenu}" />
                                                         </DataTrigger.Setters>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding IsDirectory}" Value="False">
                                                         <DataTrigger.Setters>
-                                                            <Setter Property="ContextMenu" Value="{StaticResource FileContextMenu}" />
+                                                            <Setter Property="ContextMenu"
+                                                                    Value="{StaticResource FileContextMenu}" />
                                                         </DataTrigger.Setters>
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -148,31 +307,60 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TabControl Grid.Column="0" SelectionChanged="tabControl1_SelectionChanged" x:Name="ActiveFilesTabControl" Background="#2b2b2b" ItemsSource="{Binding ActiveFiles}" >
+                <TabControl Grid.Column="0" SelectionChanged="tabControl1_SelectionChanged"
+                            Loaded="ActiveFilesTabControl_OnLoaded"
+                            x:Name="ActiveFilesTabControl" Background="#2b2b2b" ItemsSource="{Binding ActiveFiles}">
+                    <TabControl.Resources>
+                        <Grid x:Key="TabControlContentTemplate"
+                              d:DataContext="{d:DesignInstance Type=model:CodeFileModel}">
+                            <avalonedit:TextEditor Background="#1c1c1c"
+                                                   x:Name="TextEditor"
+                                                   HorizontalScrollBarVisibility="Auto"
+                                                   Foreground="#bdbdbd" SyntaxHighlighting="C#"
+                                                   ShowLineNumbers="True"
+                                                   LineNumbersForeground="#808080"
+                                                   Document="{Binding Content}" />
+                        </Grid>
+                    </TabControl.Resources>
+
+                    <TabControl.Template>
+                        <ControlTemplate TargetType="TabControl">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                              VerticalScrollBarVisibility="Disabled">
+                                    <TabPanel Panel.ZIndex="1"
+                                              KeyboardNavigation.TabIndex="1"
+                                              Margin="2,2,2,0"
+                                              IsItemsHost="true" />
+                                </ScrollViewer>
+                                <ContentPresenter Grid.Row="1" x:Name="PART_SelectedContentHost"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  ContentSource="SelectedContent" />
+                            </Grid>
+                        </ControlTemplate>
+                    </TabControl.Template>
+
                     <TabControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="5 0">
+                            <StackPanel CanHorizontallyScroll="True" Orientation="Horizontal" Margin="5 0">
                                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
                                 <Button
                                     Command="{Binding DataContext.RemoveTabCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}}"
                                     CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}} }"
-                                    Height="30" Width="30" Margin="10 5 0 5">
-                                    <Image Source="../Source/close.png" Margin="5" />
+                                    Height="15" Width="15" Margin="10 2 0 2">
+                                    <Image Source="../Source/close.png" />
                                 </Button>
                             </StackPanel>
                         </DataTemplate>
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <Grid d:DataContext="{d:DesignInstance Type=model:CodeFileModel}">
-                                <avalonedit:TextEditor Background="Black"
-                                                       x:Name="TextEditor"
-                                                       HorizontalScrollBarVisibility="Auto"
-                                                       Foreground="#bdbdbd" SyntaxHighlighting="C#"
-                                                       ShowLineNumbers="True"
-                                                       LineNumbersForeground="#808080"
-                                                       Document="{Binding Content}" />
-                            </Grid>
+                            <ContentPresenter Content="{StaticResource TabControlContentTemplate}" />
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>

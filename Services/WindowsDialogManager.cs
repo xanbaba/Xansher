@@ -4,11 +4,15 @@ namespace Xansher.Services;
 
 public class WindowsDialogManager : IFileDialogManager, IDirectoryDialogManager
 {
-    public string? ShowOpenFileDialog(string? filter)
+    public string? ShowOpenFileDialog(object? filter)
     {
+        if (filter is not string filterString)
+        {
+            return null;
+        }
         var openFileDialog = new OpenFileDialog
         {
-            Filter = filter ?? string.Empty
+            Filter = filterString ?? string.Empty
         };
         
         var dialogResult = openFileDialog.ShowDialog();

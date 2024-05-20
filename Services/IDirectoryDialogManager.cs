@@ -2,6 +2,9 @@
 
 public interface IDirectoryDialogManager
 {
-    // returns the path to selected directory
+    /// <summary>
+    ///     Opens an UI window for selecting the directory
+    /// </summary>
+    /// <returns>The path to selected directory</returns>
     public string? ShowOpenDirectoryDialog();
 }
