@@ -7,20 +7,28 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Highlighting;
 using Xansher.CustomControls;
 using Xansher.Messages;
-using Xansher.Model;
 
 namespace Xansher.Views;
 
 public partial class MainView
 {
-    public static readonly DependencyProperty AddProjectElementClickCommandProperty = DependencyProperty.Register(
-        nameof(AddProjectElementClickCommand), typeof(ICommand), typeof(MainView),
+    public static readonly DependencyProperty AddFileProjectElementClickCommandProperty = DependencyProperty.Register(
+        nameof(AddFileProjectElementClickCommand), typeof(ICommand), typeof(MainView),
         new PropertyMetadata(default(ICommand)));
 
-    public ICommand? AddProjectElementClickCommand
+    public ICommand? AddFileProjectElementClickCommand
     {
-        get => (ICommand)GetValue(AddProjectElementClickCommandProperty);
-        set => SetValue(AddProjectElementClickCommandProperty, value);
+        get => (ICommand?)GetValue(AddFileProjectElementClickCommandProperty);
+        set => SetValue(AddFileProjectElementClickCommandProperty, value);
+    }
+
+    public static readonly DependencyProperty AddDirectoryProjectElementCommandProperty = DependencyProperty.Register(
+        nameof(AddDirectoryProjectElementCommand), typeof(ICommand), typeof(MainView), new PropertyMetadata(default(ICommand)));
+
+    public ICommand? AddDirectoryProjectElementCommand
+    {
+        get => (ICommand?)GetValue(AddDirectoryProjectElementCommandProperty);
+        set => SetValue(AddDirectoryProjectElementCommandProperty, value);
     }
 
     public static readonly DependencyProperty RemoveProjectElementCommandProperty = DependencyProperty.Register(
@@ -49,13 +57,24 @@ public partial class MainView
         ActiveFilesTabControl.SelectedIndex = 0;
     }
 
-    private void AddProjectElementMenuItem_OnClick(object sender, RoutedEventArgs e)
+    private void AddFileProjectElementMenuItem_OnClick(object sender, RoutedEventArgs e)
     {
         if (sender is not MenuItem menuItem) return;
-        if (menuItem.Parent is not ContextMenu contextMenu) return;
+        if (menuItem.Parent is not MenuItem parentMenuItem) return;
+        if (parentMenuItem.Parent is not ContextMenu contextMenu) return;
         if (contextMenu.PlacementTarget is not ProjectElementButton projectElementButton) return;
 
-        AddProjectElementClickCommand?.Execute(projectElementButton.ProjectElement.Path);
+        AddFileProjectElementClickCommand?.Execute(projectElementButton.ProjectElement.Path);
+    }
+
+    private void AddDirectoryProjectElementMenuItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is not MenuItem menuItem) return;
+        if (menuItem.Parent is not MenuItem parentMenuItem) return;
+        if (parentMenuItem.Parent is not ContextMenu contextMenu) return;
+        if (contextMenu.PlacementTarget is not ProjectElementButton projectElementButton) return;
+
+        AddDirectoryProjectElementCommand?.Execute(projectElementButton.ProjectElement.Path);
     }
 
     private void RemoveProjectElementMenuItem_OnClick(object sender, RoutedEventArgs e)
@@ -74,39 +93,17 @@ public partial class MainView
 
     void TabItem_UpdateHandler()
     {
-        if (ActiveFilesTabControl.Template.FindName("PART_SelectedContentHost", ActiveFilesTabControl) is
-            not ContentPresenter myContentPresenter) return;
+        var editor = TextEditor();
 
-        myContentPresenter.ApplyTemplate();
-        if (myContentPresenter.ContentTemplate?.FindName("TextEditor", myContentPresenter) is TextEditor textEditor)
+        if (editor != null)
         {
-            WeakReferenceMessenger.Default.Send(new ChangeCurrentActiveFileTextEditorMessage(textEditor));
+            WeakReferenceMessenger.Default.Send(new ChangeCurrentActiveFileTextEditorMessage(editor));
         }
     }
 
     private void ActiveFilesTabControl_OnLoaded(object sender, RoutedEventArgs e)
     {
-        TextEditor? editor = null;
-        
-        var dictionaryEnumerator = ActiveFilesTabControl.Resources.GetEnumerator();
-        using var disposeDictionaryEnumerator = dictionaryEnumerator as IDisposable;
-        while (dictionaryEnumerator.MoveNext())
-        {
-            if ((string)dictionaryEnumerator.Key == "TabControlContentTemplate")
-            {
-                var grid = dictionaryEnumerator.Value as Grid;
-                if (grid == null)
-                {
-                    continue;
-                }
-
-                var children = grid.Children;
-                foreach (UIElement child in children)
-                {
-                    editor = child as TextEditor;
-                }
-            }
-        }
+        var editor = TextEditor();
 
         if (editor == null)
         {
@@ -141,5 +138,31 @@ public partial class MainView
         
         editor.SyntaxHighlighting = null;
         editor.SyntaxHighlighting = highlighting;
+    }
+
+    private TextEditor? TextEditor()
+    {
+        TextEditor? editor = null;
+
+        var dictionaryEnumerator = ActiveFilesTabControl.Resources.GetEnumerator();
+        using var disposeDictionaryEnumerator = dictionaryEnumerator as IDisposable;
+        while (dictionaryEnumerator.MoveNext())
+        {
+            if ((string)dictionaryEnumerator.Key == "TabControlContentTemplate")
+            {
+                if (dictionaryEnumerator.Value is not Grid grid)
+                {
+                    continue;
+                }
+
+                var children = grid.Children;
+                foreach (UIElement child in children)
+                {
+                    editor = child as TextEditor;
+                }
+            }
+        }
+
+        return editor;
     }
 }

@@ -27,23 +27,21 @@ public partial class MainViewModel : BaseViewModel
     private TextEditor? _currentActiveFileTextEditor;
     private string? _projectDirectory;
 
-    public MainViewModel(IFileDialogManager fileDialogManager, ICliManager cliManager, IFileManager fileManager, IDirectoryManager directoryManager)
+    public MainViewModel(IFileDialogManager fileDialogManager, ICliManager cliManager, IFileManager fileManager,
+        IDirectoryManager directoryManager)
     {
         _fileDialogManager = fileDialogManager;
         _cliManager = cliManager;
         _fileManager = fileManager;
         _directoryManager = directoryManager;
         WeakReferenceMessenger.Default.Register<AddActiveDocumentMessage>(this, AddActiveFile);
-        WeakReferenceMessenger.Default.Register<OpenProjectMessage>(this, (_, message) =>
-        {
-            LoadProject(message.Path);
-        });
+        WeakReferenceMessenger.Default.Register<OpenProjectMessage>(this,
+            (_, message) => { LoadProject(message.Path); });
         WeakReferenceMessenger.Default.Register<AddProjectElementMessage>(this, AddNewProjectElementToDirectory);
-        WeakReferenceMessenger.Default.Register<ChangeCurrentActiveFileTextEditorMessage>(this, ChangeCurrentActiveFileTextEditor);
-        WeakReferenceMessenger.Default.Register<RefreshProjectElementsMessage>(this, (_, _) =>
-        {
-            LoadProjectElements();
-        });
+        WeakReferenceMessenger.Default.Register<ChangeCurrentActiveFileTextEditorMessage>(this,
+            ChangeCurrentActiveFileTextEditor);
+        WeakReferenceMessenger.Default.Register<RefreshProjectElementsMessage>(this,
+            (_, _) => { LoadProjectElements(); });
     }
 
     private void ChangeCurrentActiveFileTextEditor(object recipient, ChangeCurrentActiveFileTextEditorMessage message)
@@ -53,7 +51,15 @@ public partial class MainViewModel : BaseViewModel
 
     private void AddNewProjectElementToDirectory(object recipient, AddProjectElementMessage message)
     {
-        _fileManager.CreateFile(message.Path, message.FileName);
+        if (message.IsDirectory)
+        {
+            _directoryManager.CreateDirectory(message.Path + '\\' + message.Name);
+        }
+        else
+        {
+            _fileManager.CreateFile(message.Path, message.Name);
+        }
+
         LoadProjectElements();
     }
 
@@ -84,7 +90,6 @@ public partial class MainViewModel : BaseViewModel
 
             Application.Current.Dispatcher.Invoke(LoadProjectElements);
         });
-        
     }
 
     [RelayCommand]
@@ -94,6 +99,7 @@ public partial class MainViewModel : BaseViewModel
         {
             return;
         }
+
         _cliManager.BuildProject(_projectDirectory, (sender, _) =>
         {
             if (sender is Process process)
@@ -110,36 +116,48 @@ public partial class MainViewModel : BaseViewModel
     {
         _currentActiveFileTextEditor?.Cut();
     }
-    
+
     [RelayCommand]
     private void Copy()
     {
         _currentActiveFileTextEditor?.Copy();
     }
-    
+
     [RelayCommand]
     private void Paste()
     {
         _currentActiveFileTextEditor?.Paste();
     }
-    
+
     [RelayCommand]
     private void Undo()
     {
         _currentActiveFileTextEditor?.Undo();
     }
-    
+
     [RelayCommand]
     private void Redo()
     {
         _currentActiveFileTextEditor?.Redo();
     }
-    
+
     [RelayCommand]
-    private void ShowAddNewProjectElementView(string? path)
+    private void ShowAddNewFileProjectElementView(string? path)
     {
         var addProjectElementView = App.ServiceProvider.GetService<AddNewProjectElementView>()!;
         var addNewProjectElementViewModel = App.ServiceProvider.GetService<AddNewProjectElementViewModel>()!;
+        addNewProjectElementViewModel.IsDirectory = false;
+        addNewProjectElementViewModel.Path = path;
+        addProjectElementView.DataContext = addNewProjectElementViewModel;
+        addProjectElementView.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void ShowAddNewDirectoryProjectElementView(string? path)
+    {
+        var addProjectElementView = App.ServiceProvider.GetService<AddNewProjectElementView>()!;
+        var addNewProjectElementViewModel = App.ServiceProvider.GetService<AddNewProjectElementViewModel>()!;
+        addNewProjectElementViewModel.IsDirectory = true;
         addNewProjectElementViewModel.Path = path;
         addProjectElementView.DataContext = addNewProjectElementViewModel;
         addProjectElementView.ShowDialog();
@@ -152,6 +170,7 @@ public partial class MainViewModel : BaseViewModel
         {
             return;
         }
+
         if (projectElement.IsDirectory)
         {
             _directoryManager.RemoveDirectory(projectElement.Path);
@@ -160,6 +179,7 @@ public partial class MainViewModel : BaseViewModel
         {
             _fileManager.Remove(projectElement.Path);
         }
+
         LoadProjectElements();
     }
 
@@ -187,7 +207,6 @@ public partial class MainViewModel : BaseViewModel
         LoadProject(fileName);
     }
 
-    
 
     private void LoadProject(string? fileName)
     {
@@ -199,6 +218,7 @@ public partial class MainViewModel : BaseViewModel
         LoadProjectElements();
     }
 
+    [RelayCommand]
     private void LoadProjectElements()
     {
         if (_projectDirectory == null) return;
@@ -224,20 +244,27 @@ public partial class MainViewModel : BaseViewModel
         AddFiles(projectElement);
     }
 
-    private static void AddFiles(ProjectElement projectElement)
+    private void AddFiles(ProjectElement projectElement)
     {
         if (projectElement.Path == null) throw new ArgumentException("Path is null");
         if (projectElement.ProjectElements == null) throw new ArgumentException("ProjectElements is null");
 
-        var files = Directory.GetFiles(projectElement.Path);
-        foreach (var file in files)
+        try
         {
-            projectElement.ProjectElements.Add(new ProjectElement
+            var files = Directory.GetFiles(projectElement.Path);
+            foreach (var file in files)
             {
-                Name = file.Split('\\').Last(),
-                Path = file,
-                IsDirectory = false,
-            });
+                projectElement.ProjectElements.Add(new ProjectElement
+                {
+                    Name = file.Split('\\').Last(),
+                    Path = file,
+                    IsDirectory = false,
+                });
+            }
+        }
+        catch (DirectoryNotFoundException)
+        {
+            _projectDirectory = null;
         }
     }
 
@@ -246,16 +273,23 @@ public partial class MainViewModel : BaseViewModel
         if (projectElement.Path == null) throw new ArgumentException("Path is null");
         if (projectElement.ProjectElements == null) throw new ArgumentException("ProjectElements is null");
 
-        var directories = Directory.GetDirectories(projectElement.Path);
-        foreach (var directory in directories)
+        try
         {
-            projectElement.ProjectElements.Add(new ProjectElement
+            var directories = Directory.GetDirectories(projectElement.Path);
+            foreach (var directory in directories)
             {
-                Name = directory.Split('\\').Last(),
-                Path = directory,
-                IsDirectory = true
-            });
-            AddProjectElementsToDirectory(projectElement.ProjectElements.Last());
+                projectElement.ProjectElements.Add(new ProjectElement
+                {
+                    Name = directory.Split('\\').Last(),
+                    Path = directory,
+                    IsDirectory = true
+                });
+                AddProjectElementsToDirectory(projectElement.ProjectElements.Last());
+            }
+        }
+        catch (DirectoryNotFoundException)
+        {
+            _projectDirectory = null;
         }
     }
 }

@@ -16,7 +16,7 @@
             <RowDefinition />
             <RowDefinition Height="1.2*" />
         </Grid.RowDefinitions>
-        <TextBlock TextAlignment="Center" VerticalAlignment="Center">File Name:</TextBlock>
+        <TextBlock TextAlignment="Center" VerticalAlignment="Center">Name:</TextBlock>
         <TextBox Grid.Row="1" Text="{Binding FileName}" TextAlignment="Center" />
         <Button Grid.Row="2" Command="{Binding CreateNewProjectElementCommand}" CommandParameter="{Binding ElementName=AddNewProjectElementWindow}">Create</Button>
     </Grid>

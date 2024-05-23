@@ -101,6 +101,29 @@
             </DrawingGroup>
         </DrawingGroup>
         <DrawingImage Drawing="{StaticResource HammerSvgrepoComXaml}" x:Key="DiHammerSvgrepoComXaml" />
+
+        <DrawingGroup x:Key="RefreshCwAltSvgrepoComXaml">
+            <DrawingGroup.ClipGeometry>
+                <RectangleGeometry Rect="0.0,0.0,24.0,24.0" />
+            </DrawingGroup.ClipGeometry>
+            <DrawingGroup />
+            <DrawingGroup />
+            <DrawingGroup>
+                <GeometryDrawing>
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" DashCap="Round" EndLineCap="Round"
+                             StartLineCap="Round" />
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                        <PathGeometry
+                            Figures="M 21 12 C 21 16.9706 16.9706 21 12 21 C 9.69494 21 7.59227 20.1334 6 18.7083 L 3 16 M 3 12 C 3 7.02944 7.02944 3 12 3 C 14.3051 3 16.4077 3.86656 18 5.29168 L 21 8 M 3 21 V 16 M 3 16 H 8 M 21 3 V 8 M 21 8 H 16"
+                            FillRule="Nonzero" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingGroup>
+        <DrawingImage Drawing="{StaticResource RefreshCwAltSvgrepoComXaml}" x:Key="DiRefreshCwAltSvgrepoComXaml" />
+
     </Window.Resources>
 
     <Window.InputBindings>
@@ -204,98 +227,116 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition MinWidth="300" />
             </Grid.ColumnDefinitions>
-            <TreeView VerticalContentAlignment="Stretch" Background="#2b2b2b" Margin="5 10 "
-                      ItemsSource="{Binding ProjectElements}">
-                <TreeView.Resources>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button Width="25" HorizontalAlignment="Left" Margin="5" Padding="2" Height="25" Command="{Binding LoadProjectElementsCommand}">
+                    <Image Source="{StaticResource DiRefreshCwAltSvgrepoComXaml}" />
+                </Button>
+                <TreeView Grid.Row="1" VerticalContentAlignment="Stretch" Background="#2b2b2b" Margin="5 10 "
+                          ItemsSource="{Binding ProjectElements}">
+                    <TreeView.Resources>
 
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                     Color="Transparent" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                                     Color="Black" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                                     Color="Transparent" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                     Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                         Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                         Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                         Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                         Color="Black" />
 
-                    <HierarchicalDataTemplate DataType="{x:Type model:ProjectElement}">
-                        <TreeViewItem VerticalContentAlignment="Stretch" Margin="-20 0 0 0" FontSize="10"
-                                      Foreground="#bdbdbd"
-                                      ItemsSource="{Binding ProjectElements}">
-                            <TreeViewItem.Header>
-                                <StackPanel Name="ProjectElement" Orientation="Horizontal">
-                                    <StackPanel.Resources>
-                                        <Style TargetType="Image">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDirectory}" Value="True">
-                                                    <Setter Property="Source" Value="../Source/folder.png" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsDirectory}" Value="False">
-                                                    <Setter Property="Source" Value="../Source/file.png" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </StackPanel.Resources>
-                                    <cc:ProjectElementButton DoubleClickCommand="{Binding OpenFileInEditorCommand}"
-                                                             ProjectElement="{Binding ElementName=ProjectElement, Path=DataContext}"
-                                                             MouseDoubleClick="ProjectElement_OnMouseDoubleClick"
-                                                             x:Name="ProjectElementButton"
-                                                             VerticalContentAlignment="Stretch">
-                                        <cc:ProjectElementButton.Content>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <Image Width="15" Margin="0 0 5 0" />
-                                                <TextBlock Grid.Column="1" Text="{Binding Name}"></TextBlock>
-                                            </Grid>
-                                        </cc:ProjectElementButton.Content>
-                                        <cc:ProjectElementButton.Resources>
-
-                                            <ContextMenu x:Key="DirectoryContextMenu">
-                                                <MenuItem Header="Add" Click="AddProjectElementMenuItem_OnClick" />
-                                                <MenuItem Header="Remove" Click="RemoveProjectElementMenuItem_OnClick" />
-                                            </ContextMenu>
-
-                                            <ContextMenu x:Key="FileContextMenu">
-                                                <MenuItem Header="Remove" Click="RemoveProjectElementMenuItem_OnClick" />
-                                            </ContextMenu>
-
-                                            <Style TargetType="cc:ProjectElementButton">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="cc:ProjectElementButton">
-                                                            <Border Background="{TemplateBinding Background}">
-                                                                <ContentPresenter Content="{TemplateBinding Content}" />
-                                                            </Border>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Setter Property="Background" Value="#2b2b2b" />
-                                                <Setter Property="Foreground" Value="#bdbdbd" />
+                        <HierarchicalDataTemplate DataType="{x:Type model:ProjectElement}">
+                            <TreeViewItem VerticalContentAlignment="Stretch" Margin="-20 0 0 0" FontSize="10"
+                                          Foreground="#bdbdbd"
+                                          ItemsSource="{Binding ProjectElements}"
+                                          IsExpanded="{Binding IsExpanded}">
+                                <TreeViewItem.Header>
+                                    <StackPanel Name="ProjectElement" Orientation="Horizontal">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="Image">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDirectory}" Value="True">
-                                                        <DataTrigger.Setters>
-                                                            <Setter Property="ContextMenu"
-                                                                    Value="{StaticResource DirectoryContextMenu}" />
-                                                        </DataTrigger.Setters>
+                                                        <Setter Property="Source" Value="../Source/folder.png" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding IsDirectory}" Value="False">
-                                                        <DataTrigger.Setters>
-                                                            <Setter Property="ContextMenu"
-                                                                    Value="{StaticResource FileContextMenu}" />
-                                                        </DataTrigger.Setters>
+                                                        <Setter Property="Source" Value="../Source/file.png" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </cc:ProjectElementButton.Resources>
-                                    </cc:ProjectElementButton>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                    </HierarchicalDataTemplate>
-                </TreeView.Resources>
-            </TreeView>
+                                        </StackPanel.Resources>
+                                        <cc:ProjectElementButton DoubleClickCommand="{Binding OpenFileInEditorCommand}"
+                                                                 ProjectElement="{Binding ElementName=ProjectElement, Path=DataContext}"
+                                                                 MouseDoubleClick="ProjectElement_OnMouseDoubleClick"
+                                                                 x:Name="ProjectElementButton"
+                                                                 VerticalContentAlignment="Stretch">
+                                            <cc:ProjectElementButton.Content>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Width="15" Margin="0 0 5 0" />
+                                                    <TextBlock Grid.Column="1" Text="{Binding Name}"></TextBlock>
+                                                </Grid>
+                                            </cc:ProjectElementButton.Content>
+                                            <cc:ProjectElementButton.Resources>
+
+                                                <ContextMenu x:Key="DirectoryContextMenu">
+                                                    <MenuItem Header="Add">
+                                                        <MenuItem Header="Add File"
+                                                                  Click="AddFileProjectElementMenuItem_OnClick" />
+                                                        <MenuItem Header="Add Directory"
+                                                                  Click="AddDirectoryProjectElementMenuItem_OnClick" />
+                                                    </MenuItem>
+                                                    <MenuItem Header="Remove"
+                                                              Click="RemoveProjectElementMenuItem_OnClick" />
+                                                </ContextMenu>
+
+                                                <ContextMenu x:Key="FileContextMenu">
+                                                    <MenuItem Header="Remove"
+                                                              Click="RemoveProjectElementMenuItem_OnClick" />
+                                                </ContextMenu>
+
+                                                <Style TargetType="cc:ProjectElementButton">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="cc:ProjectElementButton">
+                                                                <Border Background="{TemplateBinding Background}">
+                                                                    <ContentPresenter
+                                                                        Content="{TemplateBinding Content}" />
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Background" Value="#2b2b2b" />
+                                                    <Setter Property="Foreground" Value="#bdbdbd" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsDirectory}" Value="True">
+                                                            <DataTrigger.Setters>
+                                                                <Setter Property="ContextMenu"
+                                                                        Value="{StaticResource DirectoryContextMenu}" />
+                                                            </DataTrigger.Setters>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsDirectory}" Value="False">
+                                                            <DataTrigger.Setters>
+                                                                <Setter Property="ContextMenu"
+                                                                        Value="{StaticResource FileContextMenu}" />
+                                                            </DataTrigger.Setters>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </cc:ProjectElementButton.Resources>
+                                        </cc:ProjectElementButton>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+            </Grid>
             <GridSplitter Grid.Column="1" Margin="2,0"
                           Width="6" BorderBrush="Black" BorderThickness="2" Background="Gray"
                           VerticalAlignment="Stretch"
@@ -360,7 +401,7 @@
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <ContentPresenter Content="{StaticResource TabControlContentTemplate}" />
+                            <ContentControl Content="{StaticResource TabControlContentTemplate}" />
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>

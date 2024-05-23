@@ -24,7 +24,13 @@ public partial class CodeFileModel : ObservableObject
         {
             return;
         }
-        File.WriteAllText(Path, Content.Text);
+        try
+        {
+            File.WriteAllText(Path, Content.Text);
+        }
+        catch (DirectoryNotFoundException)
+        {
+        }
     }
 
 }

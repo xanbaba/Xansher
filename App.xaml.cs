@@ -35,7 +35,8 @@ public partial class App
         var mainView = ServiceProvider.GetService<MainView>()!;
         var mainViewModel = ServiceProvider.GetService<MainViewModel>()!;
         mainView.DataContext = mainViewModel;
-        mainView.AddProjectElementClickCommand = mainViewModel.ShowAddNewProjectElementViewCommand;
+        mainView.AddFileProjectElementClickCommand = mainViewModel.ShowAddNewFileProjectElementViewCommand;
+        mainView.AddDirectoryProjectElementCommand = mainViewModel.ShowAddNewDirectoryProjectElementViewCommand;
         mainView.RemoveProjectElementCommand = mainViewModel.RemoveProjectElementCommand;
         
 

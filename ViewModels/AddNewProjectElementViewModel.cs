@@ -11,6 +11,7 @@ public partial class AddNewProjectElementViewModel : BaseViewModel
     [ObservableProperty] private string _fileName = string.Empty;
     
     public string? Path { get; set; }
+    public bool IsDirectory { get; set; }
     
     [RelayCommand]
     private void CreateNewProjectElement(object? windowsObject)
@@ -21,7 +22,7 @@ public partial class AddNewProjectElementViewModel : BaseViewModel
             throw new ArgumentException($"Initialize {nameof(Path)} property!");
         }
 
-        WeakReferenceMessenger.Default.Send(new AddProjectElementMessage(Path, FileName));
+        WeakReferenceMessenger.Default.Send(new AddProjectElementMessage(Path, FileName, IsDirectory));
         window.Close();
     }
 }

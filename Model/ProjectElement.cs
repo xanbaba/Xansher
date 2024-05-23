@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Xansher.CustomControls;
@@ -7,13 +8,15 @@ using Xansher.Messages.MetaData;
 
 namespace Xansher.Model;
 
-public partial class ProjectElement
+public partial class ProjectElement : ObservableObject
 {
     public string? Name { get; init; }
     public string? Path { get; init; }
     public List<ProjectElement>? ProjectElements { get; set; }
     public bool IsDirectory { get; set; }
-    
+
+    [ObservableProperty] private bool _isExpanded;
+
     [RelayCommand]
     private void OpenFileInEditor(ProjectElementButton button)
     {
@@ -21,6 +24,7 @@ public partial class ProjectElement
         {
             return;
         }
+
         if (button.ProjectElement.Path == null)
         {
             return;
@@ -43,11 +47,5 @@ public partial class ProjectElement
         {
             WeakReferenceMessenger.Default.Send<RefreshProjectElementsMessage>();
         }
-    }
-
-    [RelayCommand]
-    private void Add(object projectElementButton)
-    {
-        Console.WriteLine("!");
     }
 }
